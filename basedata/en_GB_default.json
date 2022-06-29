@@ -1,0 +1,13 @@
+{
+    "localeCode": "en_GB",
+    "type": "default",
+    "metadata": {
+        "typeName": "default",
+        "wordSeparator": " ",
+        "nGramLength": 4,
+        "allowPartialWords": false
+    },
+    "corpusPaths": [
+        "datasets/en_GB/test.txt"
+    ]
+}
