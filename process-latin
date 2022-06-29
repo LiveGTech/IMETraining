@@ -13,8 +13,10 @@ const fs = require("fs");
 
 const N_GRAM_DICTIONARY_SEPARATOR = "\u241E";
 
+console.log(`Reading base data for \`${process.argv[2]}\`...`);
+
 var info = JSON.parse(fs.readFileSync(process.argv[2]));
-var nGrams = {};
+var nGrams = info.baseNGrams || {};
 var allWords = {};
 var finalData = {};
 var maximumNGramCount = 0;
@@ -42,9 +44,9 @@ info.corpusPaths.forEach(function(path) {
                 return;
             }
 
-            words[i] = words[i].replace(/[^\w\s]/g, "");
+            words[i] = words[i].replace(/[^\w\s'-]|\n|\t/g, "");
 
-            if (words[i].match(/^[\d.,]+$/)) {
+            if (words[i].match(/^[\d.,-]+$/)) {
                 return;
             }
 
@@ -144,4 +146,8 @@ Object.keys(allWords).forEach(function(word) {
 console.log(`Total n-grams: ${Object.keys(nGrams).length}`);
 console.log(`Total words: ${Object.keys(allWords).length}`);
 
+console.log(`Saving final data to \`${process.argv[3]}\`...`);
+
 fs.writeFileSync(process.argv[3], JSON.stringify(finalData));
+
+console.log("Complete!");

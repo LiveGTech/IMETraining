@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./process-latin basedata/en_GB_default.json output/en_GB_default.gime

@@ -4,10 +4,14 @@
     "metadata": {
         "typeName": "default",
         "wordSeparator": " ",
-        "nGramLength": 4,
+        "nGramLength": 3,
         "allowPartialWords": false
     },
     "corpusPaths": [
-        "datasets/en_GB/test.txt"
-    ]
+        "datasets/en_GB/wikipedia-computer.txt",
+        "datasets/en_GB/wikipedia-youtube.txt"
+    ],
+    "baseNGrams": {
+        "": [{"result": "The", "weighting": 0.5}, {"result": "I", "weighting": 0.5}, {"result": "We", "weighting": 0.5}]
+    }
 }
