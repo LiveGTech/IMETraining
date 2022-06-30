@@ -9,7 +9,11 @@
     },
     "corpusPaths": [
         "datasets/en_GB/wikipedia-computer.txt",
-        "datasets/en_GB/wikipedia-youtube.txt"
+        "datasets/en_GB/wikipedia-youtube.txt",
+        "datasets/en_GB/wikipedia-drstrange.txt",
+        "datasets/en_GB/wikipedia-topgun.txt",
+        "datasets/en_GB/wikipedia-ukraineinvasion.txt",
+        "datasets/en_GB/wikipedia-covid19pandemic.txt"
     ],
     "baseNGrams": {
         "": [{"result": "The", "weighting": 0.5}, {"result": "I", "weighting": 0.5}, {"result": "We", "weighting": 0.5}]
