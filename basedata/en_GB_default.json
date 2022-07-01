@@ -13,7 +13,13 @@
         "datasets/en_GB/wikipedia-drstrange.txt",
         "datasets/en_GB/wikipedia-topgun.txt",
         "datasets/en_GB/wikipedia-ukraineinvasion.txt",
-        "datasets/en_GB/wikipedia-covid19pandemic.txt"
+        "datasets/en_GB/wikipedia-covid19pandemic.txt",
+        "datasets/en_GB/wikipedia-unitedkingdom.txt",
+        "datasets/en_GB/wikipedia-earth.txt",
+        "datasets/en_GB/gutenberg-onlyafarmboy.txt",
+        "datasets/en_GB/gutenberg-gregorycircle.txt",
+        "datasets/en_GB/gutenberg-hunthogofjoe.txt",
+        "datasets/en_GB/gutenberg-isola.txt"
     ],
     "baseNGrams": {
         "": [{"result": "The", "weighting": 0.5}, {"result": "I", "weighting": 0.5}, {"result": "We", "weighting": 0.5}]

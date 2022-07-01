@@ -46,7 +46,7 @@ info.corpusPaths.forEach(function(path) {
 
             words[i] = words[i].replace(/[^\w\s'-]|\n|\t/g, "");
 
-            if (words[i].match(/^[\d.,-]+$/)) {
+            if (words[i].match(/^[\d.,+\-±]+$/)) {
                 return;
             }
 
@@ -74,13 +74,18 @@ info.corpusPaths.forEach(function(path) {
             if (existingResult) {
                 existingResult.count++;
 
+                if (!existingResult.paths.includes(path)) {
+                    existingResult.paths.push(path);
+                }
+
                 if (existingResult.count > maximumNGramCount) {
                     maximumNGramCount = existingResult.count;
                 }
             } else {
                 nGrams[key].push({
                     result: result,
-                    count: 1
+                    count: 1,
+                    paths: [path]
                 });
 
                 if (maximumNGramCount == 0) {
@@ -103,7 +108,7 @@ var nGramsDeleted = 0;
 
 Object.keys(nGrams).forEach(function(key) {
     nGrams[key].forEach(function(candidate, i) {
-        if (candidate.count < 2) {
+        if ((candidate.hasOwnProperty("count") && candidate.count < 2) || (candidate.hasOwnProperty("paths") && candidate.paths.length < 3)) {
             nGrams[key][i] = null;
     
             candidatesDeleted++;
@@ -114,6 +119,7 @@ Object.keys(nGrams).forEach(function(key) {
         candidate.weighting = 0.5 + (0.25 * (candidate.count / maximumNGramCount));
 
         delete candidate.count;
+        delete candidate.paths;
     });
 
     nGrams[key] = nGrams[key].filter((candidate) => candidate != null);
@@ -137,7 +143,7 @@ Object.keys(allWords).forEach(function(word) {
     }
 
     finalData.wordDictionary.push({
-        input: word.toLocaleLowerCase(),
+        input: word.toLocaleLowerCase().replace(/['\-]/g, ""),
         result: word,
         weighting: 0.5 + (0.25 * (allWords[word] / maximumWordCount))
     });
