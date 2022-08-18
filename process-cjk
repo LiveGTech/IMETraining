@@ -142,8 +142,6 @@ console.log(`Highest word occurence count: ${maximumWordCount}`);
 
 console.log("Processing n-grams...");
 
-console.log(nGrams);
-
 delete nGrams[N_GRAM_DICTIONARY_SEPARATOR];
 
 var candidatesDeleted = 0;
