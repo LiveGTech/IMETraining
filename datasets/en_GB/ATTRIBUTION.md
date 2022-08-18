@@ -1,6 +1,6 @@
 # Attribution
 
 * The spelling map (`spellmap.json`) contains data from the [American-British English Translator](https://github.com/hyperreality/American-British-English-Translator). This content is licensed under the [MIT License](https://github.com/hyperreality/American-British-English-Translator/blob/master/LICENSE).
+* The phrase list (`phrases.txt`) contains data from [ManyThings.org](http://www.manythings.org/anki) with data collated from [Tatoeba](https://tatoeba.org). This content is licensed under the [Creative Commons Attribution License 2.0](https://creativecommons.org/licenses/by/2.0).
 * Files starting with `wikipedia-` in their name contain extracts from the [English Wikipedia](https://en.wikipedia.org/). This content is licensed under the [Creative Commons Attribution-ShareAlike License 3.0](https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License).
 * Files starting with `gutenberg-` in their name contain extracts from [Project Gutenberg](https://www.gutenberg.org/). Due to the age of the content and the nature of copyright law, this content is in the public domain.
-* The file named `phrases.txt` contains data from [ManyThings.org](http://www.manythings.org/anki) with data collated from [Tatoeba](https://tatoeba.org). This content is licensed under the [Creative Commons Attribution License 2.0](https://creativecommons.org/licenses/by/2.0).

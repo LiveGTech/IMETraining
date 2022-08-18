@@ -1,3 +1,4 @@
 #!/bin/bash
 
 ./process-latin basedata/en_GB_default.json output/en_GB_default.gime
+./process-cjk basedata/zh_CN_pinyin.json output/zh_CN_pinyin.gime

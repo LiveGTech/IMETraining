@@ -1,0 +1,202 @@
+#!/usr/bin/env node
+
+/*
+    IME Training
+
+    Copyright (C) LiveG. All Rights Reserved.
+
+    https://liveg.tech
+    Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
+*/
+
+const fs = require("fs");
+
+const N_GRAM_DICTIONARY_SEPARATOR = "\u241E";
+
+console.log(`Reading base data for \`${process.argv[2]}\`...`);
+
+var info = JSON.parse(fs.readFileSync(process.argv[2], "utf-8"));
+var nGrams = info.baseNGrams || {};
+var allWords = {};
+var finalData = {};
+var maximumNGramCount = 0;
+var maximumWordCount = 2;
+
+finalData.localeCode = info.localeCode;
+finalData.type = info.type;
+finalData.metadata = info.metadata;
+
+console.log("Building word romanisation map...");
+
+var romanisationData = fs.readFileSync(info.romanisationMap, "utf-8").split("\n");
+var romanisationMap = {};
+
+romanisationData.forEach(function(line) {
+    if (line.trim() == "") {
+        return;
+    }
+
+    var parts = line.trim().split(" ");
+    var character = "";
+
+    parts.forEach(function(part, i) {
+        if (i == 0) {
+            character = part;
+            allWords[character] ||= 2;
+
+            return;
+        }
+
+        romanisationMap[character] ||= [];
+        romanisationMap[character].push(part);
+    });
+});
+
+console.log("Reading vocabulary...");
+
+var vocabularyData = fs.readFileSync(info.vocabulary, "utf-8").split("\n");
+
+vocabularyData.forEach(function(line) {
+    if (line.trim() == "") {
+        return;
+    }
+
+    allWords[line.trim()] ||= 0;
+    allWords[line.trim()]++;
+
+    if (allWords[line.trim()] > maximumWordCount) {
+        maximumWordCount = allWords[line.trim()];
+    }
+});
+
+info.corpusPaths.forEach(function(path) {
+    console.log(`Finding n-grams for path \`${path}\`...`);
+
+    var corpusData = fs.readFileSync(path, "utf-8");
+    var corpusSentences = corpusData.split(/[。，、？！]/);
+
+    corpusSentences.forEach(function(sentence) {
+        sentence = sentence.trim();
+        
+        var words = [...sentence];
+
+        for (var i = 0; i < words.length; i++) {
+            words[i] = words[i].trim();
+
+            if (words[i] == "") {
+                return;
+            }
+
+            if (words[i].match(/^[\d.,+\-±]+$/)) {
+                return;
+            }
+
+            allWords[words[i]] ||= 0;
+            allWords[words[i]]++;
+
+            if (allWords[words[i]] > maximumWordCount) {
+                maximumWordCount = allWords[words[i]];
+            }
+        }
+
+        for (var i = 0; i < words.length; i++) {
+            var nGram = words.slice(Math.max(i - info.metadata.nGramLength, 0), i);
+            var result = nGram.pop();
+            var key = nGram.join(N_GRAM_DICTIONARY_SEPARATOR) + N_GRAM_DICTIONARY_SEPARATOR;
+
+            if (!result || nGram.length == 0) {
+                continue;
+            }
+
+            nGrams[key] ||= [];
+
+            var existingResult = nGrams[key].find((candidate) => candidate.result == result);
+
+            if (existingResult) {
+                existingResult.count++;
+
+                if (!existingResult.paths.includes(path)) {
+                    existingResult.paths.push(path);
+                }
+
+                if (existingResult.count > maximumNGramCount) {
+                    maximumNGramCount = existingResult.count;
+                }
+            } else {
+                nGrams[key].push({
+                    result: result,
+                    count: 1,
+                    paths: [path]
+                });
+
+                if (maximumNGramCount == 0) {
+                    maximumNGramCount = 1;
+                }
+            }
+        }
+    });
+});
+
+console.log(`Highest n-gram candidate occurence count: ${maximumNGramCount}`);
+console.log(`Highest word occurence count: ${maximumWordCount}`);
+
+console.log("Processing n-grams...");
+
+console.log(nGrams);
+
+delete nGrams[N_GRAM_DICTIONARY_SEPARATOR];
+
+var candidatesDeleted = 0;
+var nGramsDeleted = 0;
+
+Object.keys(nGrams).forEach(function(key) {
+    nGrams[key].forEach(function(candidate, i) {
+        if ((candidate.hasOwnProperty("count") && candidate.count < 2) || (candidate.hasOwnProperty("paths") && candidate.paths.length < 3)) {
+            nGrams[key][i] = null;
+    
+            candidatesDeleted++;
+
+            return;
+        }
+
+        candidate.weighting = 0.5 + (0.25 * (candidate.count / maximumNGramCount));
+
+        delete candidate.count;
+        delete candidate.paths;
+    });
+
+    nGrams[key] = nGrams[key].filter((candidate) => candidate != null);
+
+    if (nGrams[key].length == 0) {
+        delete nGrams[key];
+
+        nGramsDeleted++;
+    }
+});
+
+console.log(`Deleted candidates: ${candidatesDeleted}`);
+console.log(`Deleted n-grams: ${nGramsDeleted}`);
+
+finalData.nGramDictionary = nGrams;
+finalData.wordDictionary = [];
+
+Object.keys(allWords).forEach(function(word) {
+    if (allWords[word] < 1) {
+        return;
+    }
+
+    finalData.wordDictionary.push({
+        input: [...word].map((character) => romanisationMap[character]?.[0] || "").join(""),
+        result: word,
+        weighting: 0.5 + (0.25 * (allWords[word] / maximumWordCount))
+    });
+});
+
+console.log(`Total n-grams: ${Object.keys(nGrams).length}`);
+console.log(`Total words: ${Object.keys(allWords).length}`);
+
+console.log(`Saving final data to \`${process.argv[3]}\`...`);
+
+fs.writeFileSync(process.argv[3], JSON.stringify(finalData));
+
+console.log("Complete!");

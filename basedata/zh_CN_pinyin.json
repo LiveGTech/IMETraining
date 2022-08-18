@@ -1,0 +1,18 @@
+{
+    "localeCode": "zh_CN",
+    "type": "pinyin",
+    "metadata": {
+        "typeName": "pinyin",
+        "wordSeparator": "",
+        "nGramLength": 3,
+        "allowPartialWords": true
+    },
+    "romanisationMap": "datasets/zh_CN/pinyin.txt",
+    "vocabulary": "datasets/zh_CN/vocab.txt",
+    "corpusPaths": [
+        "datasets/zh_CN/phrases.txt"
+    ],
+    "baseNGrams": {
+        "": [{"result": "我", "weighting": 0.5}, {"result": "我们", "weighting": 0.5}, {"result": "你", "weighting": 0.5}]
+    }
+}
