@@ -15,7 +15,7 @@ const N_GRAM_DICTIONARY_SEPARATOR = "\u241E";
 
 console.log(`Reading base data for \`${process.argv[2]}\`...`);
 
-var info = JSON.parse(fs.readFileSync(process.argv[2]));
+var info = JSON.parse(fs.readFileSync(process.argv[2], "utf-8"));
 var nGrams = info.baseNGrams || {};
 var allWords = {};
 var finalData = {};
@@ -25,6 +25,8 @@ var maximumWordCount = 0;
 finalData.localeCode = info.localeCode;
 finalData.type = info.type;
 finalData.metadata = info.metadata;
+
+var spellingMap = info.spellingMap ? JSON.parse(fs.readFileSync(info.spellingMap, "utf-8")) : {};
 
 info.corpusPaths.forEach(function(path) {
     console.log(`Finding n-grams for path \`${path}\`...`);
@@ -39,6 +41,7 @@ info.corpusPaths.forEach(function(path) {
 
         for (var i = 0; i < words.length; i++) {
             words[i] = words[i].trim();
+            words[i] = spellingMap[words[i]] || words[i];
 
             if (words[i] == "") {
                 return;

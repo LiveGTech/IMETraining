@@ -7,6 +7,7 @@
         "nGramLength": 3,
         "allowPartialWords": false
     },
+    "spellingMap": "datasets/en_GB/spellmap.json",
     "corpusPaths": [
         "datasets/en_GB/wikipedia-computer.txt",
         "datasets/en_GB/wikipedia-youtube.txt",
