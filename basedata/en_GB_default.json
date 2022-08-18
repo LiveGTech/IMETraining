@@ -9,6 +9,7 @@
     },
     "spellingMap": "datasets/en_GB/spellmap.json",
     "corpusPaths": [
+        "datasets/en_GB/phrases.txt",
         "datasets/en_GB/wikipedia-computer.txt",
         "datasets/en_GB/wikipedia-youtube.txt",
         "datasets/en_GB/wikipedia-drstrange.txt",
