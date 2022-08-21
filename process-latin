@@ -61,40 +61,40 @@ info.corpusPaths.forEach(function(path) {
             }
         }
 
-        // TODO: Iterate to add variable-length n-grams
-
         for (var i = 0; i < words.length; i++) {
-            var nGram = words.slice(Math.max(i - info.metadata.nGramLength, 0), i);
-            var result = nGram.pop();
-            var key = nGram.map((word) => word.toLocaleLowerCase()).join(N_GRAM_DICTIONARY_SEPARATOR) + N_GRAM_DICTIONARY_SEPARATOR;
+            for (var length = 2; length <= info.metadata.nGramLength; length++) {
+                var nGram = words.slice(Math.max(i - length, 0), i);
+                var result = nGram.pop();
+                var key = nGram.map((word) => word.toLocaleLowerCase()).join(N_GRAM_DICTIONARY_SEPARATOR) + N_GRAM_DICTIONARY_SEPARATOR;
 
-            if (!result || nGram.length == 0) {
-                continue;
-            }
-
-            nGrams[key] ||= [];
-
-            var existingResult = nGrams[key].find((candidate) => candidate.result == result);
-
-            if (existingResult) {
-                existingResult.count++;
-
-                if (!existingResult.paths.includes(path)) {
-                    existingResult.paths.push(path);
+                if (!result || nGram.length == 0) {
+                    continue;
                 }
 
-                if (existingResult.count > maximumNGramCount) {
-                    maximumNGramCount = existingResult.count;
-                }
-            } else {
-                nGrams[key].push({
-                    result: result,
-                    count: 1,
-                    paths: [path]
-                });
+                nGrams[key] ||= [];
 
-                if (maximumNGramCount == 0) {
-                    maximumNGramCount = 1;
+                var existingResult = nGrams[key].find((candidate) => candidate.result == result);
+
+                if (existingResult) {
+                    existingResult.count++;
+
+                    if (!existingResult.paths.includes(path)) {
+                        existingResult.paths.push(path);
+                    }
+
+                    if (existingResult.count > maximumNGramCount) {
+                        maximumNGramCount = existingResult.count;
+                    }
+                } else {
+                    nGrams[key].push({
+                        result: result,
+                        count: 1,
+                        paths: [path]
+                    });
+
+                    if (maximumNGramCount == 0) {
+                        maximumNGramCount = 1;
+                    }
                 }
             }
         }

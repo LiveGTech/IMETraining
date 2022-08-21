@@ -100,7 +100,7 @@ info.corpusPaths.forEach(function(path) {
         }
 
         for (var i = 0; i < words.length; i++) {
-            for (var length = 1; length <= info.metadata.nGramLength; length++) {
+            for (var length = 2; length <= info.metadata.nGramLength; length++) {
                 var nGram = words.slice(Math.max(i - length, 0), i);
                 var result = nGram.pop();
                 var key = nGram.join(N_GRAM_DICTIONARY_SEPARATOR) + N_GRAM_DICTIONARY_SEPARATOR;
