@@ -61,6 +61,8 @@ info.corpusPaths.forEach(function(path) {
             }
         }
 
+        // TODO: Iterate to add variable-length n-grams
+
         for (var i = 0; i < words.length; i++) {
             var nGram = words.slice(Math.max(i - info.metadata.nGramLength, 0), i);
             var result = nGram.pop();
