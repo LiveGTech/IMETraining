@@ -5,14 +5,17 @@
         "typeName": "pinyin",
         "wordSeparator": "",
         "nGramLength": 3,
-        "allowPartialWords": true
+        "allowPartialWords": true,
+        "maxCandidates": 5
     },
     "romanisationMap": "datasets/zh_CN/pinyin.txt",
     "vocabulary": "datasets/zh_CN/vocab.txt",
     "corpusPaths": [
-        "datasets/zh_CN/phrases.txt"
+        "datasets/zh_CN/phrases.txt",
+        "datasets/zh_CN/wikipedia-computer.txt",
+        "datasets/zh_CN/wikipedia-earth.txt"
     ],
     "baseNGrams": {
-        "": [{"result": "我", "weighting": 0.5}, {"result": "我们", "weighting": 0.5}, {"result": "你", "weighting": 0.5}]
+        "": [{"result": "我", "weighting": 0.5}, {"result": "我们", "weighting": 0.5}, {"result": "你", "weighting": 0.5}, {"result": "是", "weighting": 0.5}, {"result": "不", "weighting": 0.5}]
     }
 }
