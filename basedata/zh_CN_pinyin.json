@@ -3,6 +3,7 @@
     "type": "pinyin",
     "metadata": {
         "typeName": "pinyin",
+        "displayName": "简体中文（中国）拼音（pīnyīn）",
         "wordSeparator": "",
         "nGramLength": 3,
         "allowPartialWords": true,

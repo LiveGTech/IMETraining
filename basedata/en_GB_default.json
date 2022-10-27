@@ -3,6 +3,7 @@
     "type": "default",
     "metadata": {
         "typeName": "default",
+        "displayName": "British English spelling and suggestions",
         "wordSeparator": " ",
         "nGramLength": 3,
         "allowPartialWords": false
