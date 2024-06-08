@@ -6,7 +6,8 @@
         "displayName": "British English spelling and suggestions",
         "wordSeparator": " ",
         "nGramLength": 3,
-        "allowPartialWords": false
+        "allowPartialWords": false,
+        "onlyShowWithKeyboard": true
     },
     "spellingMap": "datasets/en_GB/spellmap.json",
     "corpusPaths": [
